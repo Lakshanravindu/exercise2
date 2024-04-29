@@ -29,6 +29,17 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + '/views/index.html');
 });
 
+// New route handler for GET /api/users
+app.get("/api/users", async (req, res) => {
+  try {
+    const users = await User.find({}, '_id username'); // Query to get only _id and username fields
+    res.json(users); // Return the array of users
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Error fetching users." });
+  }
+});
+
 app.post("/api/users", async (req, res) => {
   try {
     const newUser = new User({
